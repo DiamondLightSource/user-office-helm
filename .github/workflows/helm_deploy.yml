@@ -1,0 +1,46 @@
+name: Build and publish helm charts
+
+on:
+  push:
+    branches:
+      - dls
+
+env:
+  HELM_VERSION_TO_INSTALL: 3.18.3
+
+jobs:
+  build-and-push-helm-charts:
+    name: publish helm charts to ghcr.io
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: install helm
+        uses: Azure/setup-helm@v3
+        with:
+          version: ${{ env.HELM_VERSION_TO_INSTALL }}
+
+      - name: push the helm chart
+        run: |
+          echo ${{ secrets.GITHUB_TOKEN }} | helm registry login ghcr.io/${{ github.repository_owner }} --username ${{ github.repository_owner }} --password-stdin
+
+          REGISTRY=oci://ghcr.io/diamondlightsource
+          CHARTS=$(realpath backend/duo-backend factory/duo-factory frontend/duo-frontend gateway/duo-gateway scheduler-backend/duo-scheduler-backend scheduler-frontend/duo-scheduler-frontend user-office-app)
+
+          set -x
+
+          TAG=0.1.0-dls+$(git describe --always)
+          echo "Charts will be released as version: ${TAG}"
+
+          for chart in $CHARTS; do
+            (
+              cd $chart
+              NAME=$(sed -n '/^name: */s///p' Chart.yaml)
+
+              helm package -u --app-version ${TAG} --version ${TAG} .
+              PACKAGE=${NAME}-${TAG}.tgz
+
+              helm push "$PACKAGE" $REGISTRY
+            )
+          done
