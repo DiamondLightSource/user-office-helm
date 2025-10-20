@@ -1,3 +1,7 @@
+core:
+  postgres:
+    enabled: true
+
 duo-frontend:
   replicaCount: 1
   ingress:

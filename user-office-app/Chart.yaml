@@ -38,6 +38,7 @@ dependencies:
     repository: https://charts.bitnami.com/bitnami
     version: 14.4.2
   - name: postgresql
+    condition: core.postgres.enabled
     repository: https://charts.bitnami.com/bitnami
     version: 15.5.11
     alias: duo-db
