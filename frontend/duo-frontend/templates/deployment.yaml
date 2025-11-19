@@ -65,7 +65,7 @@ spec:
     {{- with .Values.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
+    {{- end }}
       volumes:
         - name: tmp
           emptyDir: {}
-    {{- end }}
