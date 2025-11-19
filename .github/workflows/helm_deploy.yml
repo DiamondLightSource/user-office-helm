@@ -38,7 +38,7 @@ jobs:
               cd $chart
               NAME=$(sed -n '/^name: */s///p' Chart.yaml)
 
-              helm package -u --app-version ${TAG} --version ${TAG} .
+              helm package -u --app-version "latest" --version ${TAG} .
               PACKAGE=${NAME}-${TAG}.tgz
 
               helm push "$PACKAGE" $REGISTRY
