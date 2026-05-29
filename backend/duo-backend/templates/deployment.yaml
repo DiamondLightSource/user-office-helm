@@ -56,6 +56,8 @@ spec:
           volumeMounts:
             - name: node-uploads
               mountPath: /home/node/app/backend/uploads
+            - name: node-downloads
+              mountPath: /home/node/app/backend/downloads
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -70,4 +72,6 @@ spec:
     {{- end }}
       volumes:
         - name: node-uploads
+          emptyDir: {}
+        - name: node-downloads
           emptyDir: {}
