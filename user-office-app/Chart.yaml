@@ -55,7 +55,7 @@ dependencies:
     version: 0.1.0
     repository: "file://../gateway/duo-gateway"
   - name: postgresql
-    condition: scheduler.enabled
+    condition: scheduler.postgres.enabled
     repository: https://charts.bitnami.com/bitnami
     version: 15.5.11
     alias: scheduler-db

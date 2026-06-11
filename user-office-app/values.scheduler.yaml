@@ -114,6 +114,8 @@ rabbitmq:
 
 scheduler:
   enabled: true
+  postgres:
+    enabled: true
 
 scheduler-db:
   auth:
